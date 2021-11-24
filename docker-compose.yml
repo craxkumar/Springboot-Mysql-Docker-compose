@@ -1,23 +1,26 @@
 version: '3'
-
 services:
-
   db:
     image: mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=rax
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=rax
     ports:
-      - 3307:3306
-
+    - 3306:3306
+    volumes:
+       - 'db:/var/lib/mysql'
   democ:
     image: democ
     restart: on-failure
     depends_on:
-      - db
+    - db
     ports:
-      - 8080:8080
+    - 8080:8080
     environment:
-      - DATABASE_HOST=db
-      - DATABASE_NAME=rax
-      - DATABASE_PORT=3307
+    - DATABASE_HOST=db
+    - DATABASE_NAME=rax
+    - DATABASE_PORT=3306
+    volumes:
+    - .m2:/root/.m2
+volumes:
+  db:  
